@@ -29,13 +29,7 @@ def test_build_merge_sql_basic():
 
 
 def test_build_merge_sql_requires_keys():
-    spec = MergeSpec(
-        target="X",
-        source="Y",
-        keys=(),
-        columns=("a",),
-    )
-
+    spec = MergeSpec(target="X", source="Y", keys=(), columns=("a",))
     try:
         build_merge_sql(spec)
         assert False, "Expected ValueError"
@@ -44,13 +38,7 @@ def test_build_merge_sql_requires_keys():
 
 
 def test_keys_must_be_in_columns():
-    spec = MergeSpec(
-        target="X",
-        source="Y",
-        keys=("id",),
-        columns=("name",),
-    )
-
+    spec = MergeSpec(target="X", source="Y", keys=("id",), columns=("name",))
     try:
         build_merge_sql(spec)
         assert False, "Expected ValueError"
