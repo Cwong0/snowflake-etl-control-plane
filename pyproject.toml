@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sfetl"
+version = "0.1.0"
+description = "Snowflake ETL Control Plane demo (Pydantic contracts + ETL pipeline structure)"
+requires-python = ">=3.11"
+dependencies = [
+  "pydantic>=2.12",
+  "pydantic-settings>=2.2",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0",
+  "ruff>=0.5",
+]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
