@@ -10,11 +10,20 @@ from sfetl.contracts.bond_prices import BondPriceRow
 
 
 def read_csv_rows(path: str | Path) -> list[dict[str, Any]]:
-    """Extract step: read CSV rows as dictionaries (values start as strings)."""
-    p = Path(path)
-    with p.open("r", newline="", encoding="utf-8") as f:
-        return list(csv.DictReader(f))
+    """
+    Extract step: read CSV rows as dictionaries.
 
+    - encoding="utf-8-sig" strips UTF-8 BOM (common on Windows/Excel exports)
+    - Convert "" -> None so optional fields validate cleanly
+    """
+    p = Path(path)
+    with p.open("r", newline="", encoding="utf-8-sig") as f:
+        rows = list(csv.DictReader(f))
+
+    cleaned: list[dict[str, Any]] = []
+    for r in rows:
+        cleaned.append({k: (v if v != "" else None) for k, v in r.items()})
+    return cleaned
 
 def validate_bond_prices(rows: list[dict[str, Any]]) -> list[BondPriceRow]:
     """Validate step: convert raw dict rows into strongly-typed BondPriceRow objects."""
